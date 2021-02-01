@@ -1,0 +1,141 @@
+/* GENERAL STYLE */
+p {
+    font-size: 12px;
+    line-height: 1.1;
+}
+
+.socials {
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+}
+
+.carousel-indicators li {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+}
+
+.carousel-indicators li.blue{
+    color: #0000FF;
+}
+
+.splash {
+    /* background-color: rgba(85, 85, 85); */
+    background-color: rgb(85, 85, 85, 0.5);
+    background-blend-mode: overlay;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 100vh;
+    color: #fff;
+}
+
+.splash-1 {
+    background-image: url('../img/cont.png');
+}
+
+.splash-2 {
+    background-image: url('../img/cont1.png');
+}
+
+.splash-3 {
+    background-image: url('../img/cont2.png');
+}
+
+.date {
+    color: transparent;
+    -webkit-text-stroke: 2px #fff;
+    line-height: 0.9;
+    font-family: 'G-regular';
+}
+
+.month {
+    line-height: 0.8;
+    font-family: 'G-bold';
+}
+
+.time {
+    line-height: 1.1;
+    font-family: 'G-light';
+}
+
+.blue_input,
+.blue_input:focus,
+.blue_input::placeholder {
+    color: #0B24FA;
+    font-weight: bold;
+}
+
+.vl {
+    border-right: 2px solid #0B24FA;
+    min-height: 115px;
+}
+
+.fulfilled_notification {
+    color: #fff;
+    background-color: #FF0000;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    right: 0;
+}
+
+.connectionsmall img,
+.connectionlarge img {
+    display: block;
+    border-radius: 50%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.connectionsmall img {
+    width: 30px;
+    height: 30px;
+}
+
+.connectionlarge img {
+    width: 109px;
+    height: 109px;
+}
+
+.connectionlarge h1 {
+    font-size: 31px;
+}
+
+.connectionlarge h2 {
+    font-size: 15px;
+}
+
+.connectionlarge h3 {
+    font-size: 10px;
+    color: #E228C5;
+}
+
+.activityindicator {
+    top: 100%;
+    left: 90%;
+}
+
+.proximityimage img {
+    object-fit: cover;
+    width: 135px;
+    height: 120px;
+    border-radius: 15px;
+}
+
+.proximityadd{
+    border-radius: 35px;
+}
+
+.side-borders {
+    border-radius: 1px 20px;
+}
+
+.profile_cover {
+    min-height: 350px;
+    border-bottom-left-radius: 43px;
+    border-bottom-right-radius: 43px;
+}

@@ -1,0 +1,22 @@
+fieldset {
+	border: none;
+	padding: 0;
+    margin: 0 0 10px;
+    width: 100%;
+}
+
+.form-controls {
+    clear: both;
+}
+.previous-fieldset {
+	display: none;
+	float: left;
+}
+.next-fieldset {
+	float: right;
+}
+
+a.next-fieldset,
+a.previous-fieldset {
+	color: #fff;
+}
