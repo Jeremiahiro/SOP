@@ -16,8 +16,13 @@ class ActivityTags extends Model
      * @var array
     */
     protected $fillable = [
-        'user_id', 'activity_id', 'name',
-        'email', 'phone', 'person_id', 'avatar',
+        'user_id',
+        'activity_id', 
+        'name',
+        'email', 
+        'phone',
+        'person_id',
+        'avatar',
     ];
 
     /**

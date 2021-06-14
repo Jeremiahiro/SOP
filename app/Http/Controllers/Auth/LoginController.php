@@ -34,6 +34,15 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    protected function redirectTo(){
+        if(Auth::user()->role=='admin' || Auth::user()->role=='super admin'){
+            return '/adminDash';
+        } 
+        else {
+            return '/';
+        }
+    }
+
     /**
      * Redirect the user to the social authentication page.
      * this include GitHub, Twitter, Facebook and Google
@@ -50,10 +59,51 @@ class LoginController extends Controller
      *
      * @return Response
     */
+    
+     /**public function handleProviderCallback($provider)
+    {
+        try {
+    
+            $user = Socialite::driver($provider)->user();
+          
+     
+            if($user->email != null){
+
+                $newUser = User::create([
+                    'uuid' => $user->uuid,
+                    'name' => $user->name,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'provider' => $user->provider,
+                    'provider_id' => $user->id,
+                    'access_token' => $user->token,
+                    'avatar' => $user->avatar,
+                    'email' => $user->email,
+                    'email_verified_at'=> Carbon::now()->format('Y-m-d H:i:s')
+
+                ]);
+    
+                Auth::login($newUser);
+     
+                return redirect('/index');
+     
+            }else{
+              
+    
+                return redirect('/index');
+     
+            }
+    
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+    } */
+
+
     public function handleProviderCallback($provider)
     {
         try {
-            $userSocial = Socialite::driver($provider)->user();
+            $userSocial = Socialite::driver($provider)->stateless()->user();
             // $userSocial = Socialite::driver($provider)->stateless()->user();
         } catch (Exception $e) {
             return $this->sendFailedResponse($e->getMessage());
@@ -67,6 +117,9 @@ class LoginController extends Controller
 
         return redirect('/login')->with('error', 'Unable to Login, try another login option!');
     }
+
+
+
 
     /**
      * If a user has registered before using social auth, return the user

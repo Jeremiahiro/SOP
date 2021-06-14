@@ -21,6 +21,8 @@
         <div class="form-group">
             <form class="form-inline" role="form" method="POST" action="{{ route('gdpr-terms-accepted') }}">
                 {{ csrf_field() }}
+                <input class="d-none" type="text" name="accepted_gdpr" value="1" id="accepted_gdpr">
+                <input class="d-none" type="text" name="id" value="{{Auth::user()->id}}" id="id">
                 <button type="submit" class="btn blue-btn text-uppercase text-white">{{ __('Accept') }}</button>
             </form>
         </div>

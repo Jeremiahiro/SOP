@@ -71,6 +71,7 @@ jQuery(document).ready(function ($) {
         }
 
     });
+
     $(".remove").click(function () {
         if ($('.form-dup').length > 1) {
             $('.form-dup').last().remove();
@@ -80,8 +81,7 @@ jQuery(document).ready(function ($) {
         if ($('.form-dup').length < 10) {
             $(".add").show()
         }
-    });
-
+    }); 
     $("#address_1").focusin(function () {
         $("#collapseFromInfo").collapse('show');
         $("#collapseToInfo").collapse('hide');
@@ -96,7 +96,7 @@ jQuery(document).ready(function ($) {
     });
 
     $("#address_2").focusin(function () {
-        $("#collapseFromInfo").collapse('hide');
+        $("#collapseFromInfo").collapse('hide'); 
         $("#collapseToInfo").collapse('show');
         $('#sideIcon-2').removeClass('d-none')
         $('#sideIcon-1').addClass('d-none')

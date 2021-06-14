@@ -32,12 +32,18 @@ body {
     color: #0000FF;
 }
 
+
 .blue-text {
-    color: #0000FF;
+    color: #0000FF !important;
+    text-decoration: none;
 }
 
 .purple-text {
     color: #6406A8;
+}
+
+.border-blue {
+    border-color: #0000FF !important;
 }
 
 .input {
@@ -77,6 +83,57 @@ label {
     font-size: 12px;
     font-family: 'G-bold';
 }
+
+
+.activitysearchdate .blue-input, input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, .blue-input::placeholder {
+    -webkit-text-fill-color: #0000FF !important;
+    -webkit-box-shadow: 0 0 0px 1000px #0000FF inset !important;
+}
+
+.range-wrap {
+    position: relative;
+    margin: 0 auto 0rem;
+  }
+  .range {
+    width: 100%;
+  }
+
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    animate: 0.2s;
+    border-radius: 25px;
+  }
+  
+  input[type=range]::-webkit-slider-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -8px;
+    color: #0000FF !important;
+    padding: 10px !important;
+  }
+ 
+
+  .bubble {
+    color: #000;
+    float: right;
+    padding-top: 0px !important;
+    font-size: 18px;
+    font-family: 'G-regular';
+    transform: translateX(-50%);
+  }
+  
+  .bubble::after {
+    content: " km";
+    position: absolute;
+   font-size:15px ;
+    left: 100%;
+  }
 
 a,
 a:hover,
@@ -367,8 +424,8 @@ input:-webkit-autofill:focus,
 }
 
 .menu-open:checked~.menu-item-1 {
-    top: -75px;
-    left: 0;
+    top: -80px;
+    left: -30px;
     transition-duration: 600ms;
 }
 
@@ -379,6 +436,13 @@ input:-webkit-autofill:focus,
 }
 
 .menu-open:checked~.menu-item-3 {
+    top: -80px;
+    right: -35px;
+    transition-duration: 600ms;
+}
+
+
+.menu-open:checked~.menu-item-4 {
     top: -45px;
     right: -75px;
     transition-duration: 600ms;
@@ -775,11 +839,15 @@ input:checked+.toggle-slider:before {
 
 .route_white {
     background-color: #F7F7F7;
-    color: #0000ff;
+    color: #0000ff ;
 }
 
 .route_white h6 {
     color: #707070;
+}
+
+.route_white a {
+    color: #0000ff ;
 }
 
 
@@ -802,6 +870,10 @@ input:checked+.toggle-slider:before {
 
 .route_purple .sub-menu {
     color: #fff;
+}
+
+.route_purple a {
+    color: #fff ;
 }
 
 .route_blue {

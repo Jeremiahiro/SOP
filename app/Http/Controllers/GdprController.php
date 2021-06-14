@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Http\Request;
 use Dialect\Gdpr\Http\Requests\GdprDownload;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -48,15 +49,27 @@ class GdprController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function termsAccepted()
+    public function termsAccepted(Request $request)
     {
-        $user = Auth::user();
+        try {
+            
+            $user = User::find($request->id);
+       
+            $user->accepted_gdpr = $request->accepted_gdpr;
 
-        $user->update([
-            'accepted_gdpr' => true,
-        ]);
+            $user->save();
 
-        return redirect()->intended('/');
+            return redirect()->intended('/');
+
+        } catch (\Throwable $th) {
+             throw $th;
+            $response = [
+              'success' => false,
+              'message' => "OOPS! Something wennt wrong"
+            ];
+            return response()->json($response, 422);
+        }
+        
     }
 
     /**

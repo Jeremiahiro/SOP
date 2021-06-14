@@ -39,6 +39,7 @@ Route::get('activityConnection', function () {
     return view('partials.modals.activityConnection');
 });
 
+
 Auth::routes(['verify' => true]);
 
 Route::get('/activity/map-view', 'GeneralController@mapView')->name('map.view');
@@ -47,15 +48,35 @@ Route::get('/privacy-policy', 'GeneralController@privacy')->name('privacy');
 Route::get('/terms-of-use', 'GeneralController@terms')->name('tos');
 Route::get('/gdpr/dpa', 'GeneralController@gdprDPA')->name('gdpr.dpa');
 
+
+
 Auth::routes(['verify' => true]);
+
 Route::get('/login/{provider}', 'Auth\LoginController@redirectToProvider')->name('social.login');
 Route::get('/login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
+
+Route::group(['middleware' => ['auth', 'admin']], function(){
+    Route::resource('/adminDash', 'AdminController');
+    Route::get('showuser/{id}', 'AdminController@showData')->name('showuser');
+    Route::get('showuserActivity/{id}', 'AdminController@showData1')->name('showuserActivity');
+    Route::post('/editUser', 'AdminController@update');
+    Route::resource('/news', 'NewsController');
+});
+
 
 Route::group(['middleware' => ['auth', 'verified', 'gdpr.terms']], function () {
     Route::get('/', 'GeneralController@index')->name('home');
     Route::get('/search', 'GeneralController@search')->name('search');
     Route::get('/search/result', 'GeneralController@generalSearch')->name('search.query');
     Route::get('/users/search', 'GeneralController@userSearch')->name('search.user');
+
+    
+    Route::resource('/activitysearch', 'ActivitySearchController');
+
+    Route::resource('/leaders', 'LeadersController');
+
+    Route::get('getlead/{id}', 'LeadersController@editloc');
+    Route::get('lead/{from_address}', 'ActivityController@getAdd')->name('leaders.show');
 
     Route::resource('/activity', 'ActivityController');
     Route::delete('/archive/activity/{id}', 'ActivityController@archive')->name('archive.activity');

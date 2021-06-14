@@ -15,9 +15,9 @@ class Activity extends Model
     */
     protected $fillable = [
         'user_id', 
-        'from_latitude', 'from_longitude', 'from_address', 'from_location',
-        'to_address', 'to_latitude', 'to_longitude', 'to_location',
-        'start_date', 'end_date',
+        'from_latitude', 'from_longitude', 'from_address', 'from_location', 'from_image',
+        
+        'start_date', 'end_date', 'causes',
     ];
 
     /**
@@ -48,6 +48,17 @@ class Activity extends Model
         return $this->hasMany('App\ActivityTags', 'activity_id');
     }
 
+
+      /**
+     * Get the people attached to the  activity.
+     * Group by unique names
+     */
+    public function locs()
+    {
+        return $this->hasMany('App\ActivityLocations', 'activity_id');
+    }
+
+
     /**
      * Get the people attached to the  activity.
      * Group by unique names
@@ -57,6 +68,11 @@ class Activity extends Model
         return $this->hasMany('App\ActivityTags', 'activity_id')->groupBy('name');
     }
 
+    public function loccing()
+    {
+        return $this->hasMany('App\ActivityLocation', 'activity_id')->groupBy('from_address');
+    }
+
     /**
      * Get the people attached to the  activity.
      */
@@ -64,5 +80,19 @@ class Activity extends Model
     {
         return $this->hasMany('App\User', 'person_id')->orderBy('created_at');
     }
+
+
+    public function loced()
+    {
+        return $this->hasMany('App\User', 'person_id')->orderBy('created_at');
+    }
+
+      /**
+     * Get the leaders attached to the activity.
+     */
+
+    public function leaders() {
+        return $this->hasMany('App\leaders', 'from_address');
+}
 
 }

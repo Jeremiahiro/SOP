@@ -6,12 +6,14 @@ use Cloudder;
 use App\User;
 use App\Activity;
 use App\ActivityTags;
+use App\leaders;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\ActivityTagNotification;
 use App\Notifications\ActivityTagSmsNotification;
+use Image;
 
 class ActivityController extends Controller
 {
@@ -34,12 +36,14 @@ class ActivityController extends Controller
     {
         $user = Auth::user();
 
+
+
         $istagged = Activity::whereHas('tags', function($query) use($user){
                                     $query->wherePersonId($user->id);
-                                })->latest('updated_at')->simplePaginate(10);
+                                })->latest('created_at')->simplePaginate(10);
 
         $activities = Activity::with('tags')->latest('updated_at')->simplePaginate(10);
-
+       
         if ($request->ajax()) {
             $activities = view('activity.partials.activity-list-view', compact('activities', 'istagged'))->render();
             return response()->json([
@@ -48,10 +52,18 @@ class ActivityController extends Controller
                 ]);
         }
         return view('activity.index', compact('activities', 'istagged'));
-
     }
 
-  
+
+
+    public function getAdd(Request $request)
+    {
+        $leaders = leaders::where('from_address', $request->from_address)->get();
+        return view('activity.leaders', compact('leaders'));
+    }
+    
+ 
+
 
     /**
      * Show the form for creating a new resource.
@@ -77,27 +89,27 @@ class ActivityController extends Controller
         $start = Carbon::parse($request->start_date)->format('Y-m-d H:i');
         $end = Carbon::parse($request->end_date)->format('Y-m-d H:i');
 
+        if($request->from_image != null){
+
+            $from_image = $request->from_image;
+            $from_imagetxt = Image::make($from_image);
+            $from_imagetxt->text($request->causes, 110, 220, function($font) {   
+                $font->color('#fff');  
+                $font->file('frontend/font/Gilroy-Bold.woff');
+                $font->size(20);
+                $font->align('center');  
+            }); 
+            $from_imagetxt->save($from_image);
+            if($from_imagetxt){
+                $from_imagetxt = cloudinary()->upload($from_image->getRealPath())->getSecurePath();
+            }
+        }
+
+
         DB::beginTransaction();
 
         try {
-
-            if($request->from_image != null) {
-                $from_image = $request->file('from_image')->getRealPath();
-                $uploadFrom = Cloudder::upload($from_image, null, ['folder' => 'SOP_Location_Pictures']);
-                if($uploadFrom){
-                    list($width1, $height1) = getimagesize($from_image);
-                    $from_image_url= Cloudder::show(Cloudder::getPublicId(), ["width" => $width1, "height"=>$height1]);
-                }
-            }
-    
-            if($request->to_image != null){
-                $to_image = $request->file('to_image')->getRealPath();
-                $uploadTo = Cloudder::upload($to_image, null, ['folder' => 'SOP_Location_Pictures']);
-                if($uploadTo){
-                    list($width2, $height2) = getimagesize($to_image);
-                    $to_image_url= Cloudder::show(Cloudder::getPublicId(), ["width" => $width2, "height"=>$height2]);
-                }
-            }
+           
 
             $activity = Activity::firstOrCreate([
                 'from_address' => $request->from_address,
@@ -109,37 +121,51 @@ class ActivityController extends Controller
                 'to_location' => $request->to_location,
                 'to_latitude' => $request->to_latitude,
                 'to_longitude' => $request->to_longitude,
-    
+
+                'causes' => $request->causes, 
+
                 'start_date' => $start,
                 'end_date' => $end,
 
-                'from_image' => $from_image_url,
-                'to_image' => $to_image_url,
+                'from_image' => $from_imagetxt,
+                'to_image' => $request->to_image,
     
                 'user_id' => auth()->user()->id,
             ]);
     
             if ($activity->wasRecentlyCreated) {
                 // for existing users
+
                 if($request->tags != null) {
                     $tags = explode(",", $request->tags);
                     foreach($tags as $person) {
                         $existingUser = User::where('username', $person)->first();
+
+
                         if ($existingUser) {
                             $activityTag = new ActivityTags;
-                            $activityTag->activity_id   = $activity->id;
-                            $activityTag->name          = $existingUser->name;
-                            $activityTag->person_id     = $existingUser->id;
-                            $activityTag->user_id       = Auth::user()->id;
+
+                            $activityTag->user_id = Auth::user()->id;
+                            $activityTag->activity_id = $activity->id;
+                            $activityTag->name = $existingUser->name;
+                            $activityTag->email = $existingUser->email;
+                            $activityTag->phone = $existingUser->phone;
+                            $activityTag->person_id = $existingUser->id;
+                            $activityTag->avatar = $existingUser->avatar;
+                           
                             $activityTag->save();
-                            
+                        
                             $details = [
                                 'greeting' => 'Hi ' . $existingUser->name,
                                 'body' => 'You were tagged in an activity',
                                 'action' => 'click here to see',
                                 'activity_id' => $activity->id,
                             ];
-                            $existingUser->notify(new ActivityTagNotification($details));
+
+
+                             $existingUser->notify(new \App\Notifications\ActivityTagNotification($details));
+                          
+                            
                         } 
                     }
                 } 
@@ -207,6 +233,8 @@ class ActivityController extends Controller
 
     }
 
+
+
     /**
      * Display the specified resource.
      *
@@ -215,8 +243,12 @@ class ActivityController extends Controller
      */
     public function show(Activity $activity)
     {
+
         return view('activity.show', compact('activity'));
     }
+
+
+  
 
     /**
      * Show the form for editing the specified resource.
@@ -228,6 +260,14 @@ class ActivityController extends Controller
     {
         return view('activity.edit', compact('activity'));
     }
+
+   
+    public function addLoc($id)
+    {
+        $activity = Activity::where('id', $id)->get(); 
+        return view('activity.addLocation', compact('activity'));
+    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -293,7 +333,7 @@ class ActivityController extends Controller
                                         'greeting' => 'Hi ' . $existingUser->name,
                                         'body' => 'You were tagged in an activity',
                                         'action' => 'click here to see',
-                                        'activity_id' => $activity->id,
+                                        'activity_id' => $activity ->id,
                                     ];
                                     $existingUser->notify(new ActivityTagNotification($details));
                                 }

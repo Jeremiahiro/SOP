@@ -17,7 +17,7 @@
     <div class="" id="tab1">
         <div class="form-group">
             <input type="search" class="user-data blue-input input" name="user" id="user" value="" autocomplete="off"
-                placeholder="People you met">
+                placeholder="Witness">
         </div>
         <div id="user_list" class="search-result">
         </div>
@@ -46,6 +46,7 @@
                 </div>
             </fieldset>
         </div>
+        
         <div class="buttonBox">
             <div class="pull-left">
                 <button type="button" class="btn add m-0 p-0"><img src="{{ asset('/frontend/img/svg/addbtn.svg') }}" alt="add"></button>

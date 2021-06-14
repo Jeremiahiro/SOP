@@ -7,16 +7,19 @@ Activities
 @section('custom-style')
 <link href="{{ asset('frontend/css/splash.css') }}" rel="stylesheet">
 <script src="{{ asset('frontend/jquery/map-view.js') }}"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6BiYGAj-3dAd58vdTSp5eBisD7C52q-Q&callback=initMap" async defer>
+</script>
 @endsection
 
 @section('web-content')
 <script type="text/javascript">
-    window.location = "{{ route('map.view') }}"; 
+    window.location = "{{ route('map.view') }}";
+
 </script>
 @endsection
 
 @section('content')
+
 
 <section class="mb-5 py-3">
 
@@ -32,6 +35,23 @@ Activities
     <div class="tab-content">
         <div class="tab-pane in active" id="activity">
             <div id="activity-list">
+                <!--<div class="container px-4">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between">
+                            <img src="https://res.cloudinary.com/iro/image/upload/v1595613322/avatar.png"
+                                class="sub-menu avatar avatar-xs mx-0" alt="Activity Tag">
+                            <p class="p-2 m-0 f-10">Daniel Eche</p>
+                        </div>
+                        <a href="" class="sub-menu" data-toggle="modal" data-target="">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </a>
+                    </div>
+                    <p class="pt-3 text-dark f-10">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam ea
+                        ratione corrupti molestias atque quia ab ullam quisquam illum suscipit maxime dolor, est culpa
+                        necessitatibus dolore,
+                        voluptas impedit odio quos.</p>
+                    <hr class="border-blue" />
+                </div>-->
                 @include('activity.partials.activity-list-view')
             </div>
             <div class="text-center mb-5">
@@ -40,6 +60,7 @@ Activities
                 </div>
             </div>
         </div>
+
         <div class="tab-pane fade" id="tagged">
             <div id="tagged-list">
                 @include('activity.partials.tagged')
@@ -88,6 +109,8 @@ Activities
     }
 
 </script>
+
+
 @endsection
 @section('footer')
 @include('partials.mobile.footer.footer')

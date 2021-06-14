@@ -149,5 +149,4 @@ Dashboard
     }
 </script>
 
-@include('component.tour.profileTour')
 @endsection

@@ -34,8 +34,12 @@ class GeneralController extends Controller
      */
     public function search()
     {
-        return view('components.search.index');
+       
+      return view('components.search.index');
     }
+
+
+
 
     /**
      * Show the search page.
@@ -165,6 +169,9 @@ class GeneralController extends Controller
             return $output;
         }
     }
+
+
+
 
     /**
      * General Map view using google map

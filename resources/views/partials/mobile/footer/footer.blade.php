@@ -20,6 +20,9 @@
                 <a href="{{ route('search') }}" class="menu-item menu-item-3">
                     <img src="{{  asset('/frontend/img/svg/ct.svg') }}" alt="Contact Tracing">
                 </a>
+                <a href="{{ route('activitysearch.index') }}" class="menu-item menu-item-4">
+                    <img src="{{  asset('/frontend/img/svg/hs.svg') }}" alt="Contact Tracing">
+                </a>
             </div>
             <div class="">
                 <a href="{{ route('notification') }}" class="notification-icon">
